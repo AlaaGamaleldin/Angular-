@@ -17,7 +17,8 @@ activeRoute: ActivatedRoute = inject(ActivatedRoute);
 
 ngOnInit(){
 //this.courseId = this.activeRoute.snapshot.params['id'];
-this.courseId = +this.activeRoute.snapshot.paramMap.get['id'];
+this.courseId = +this.activeRoute.snapshot.paramMap.get('id');
+this.selectedCourse = this.courseSerice.courses.find(course => course.id === this.courseId)
 console.log(this.courseId);
 }
 }
