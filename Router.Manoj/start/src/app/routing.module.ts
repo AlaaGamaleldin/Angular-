@@ -17,7 +17,7 @@ const routes: Routes = [
     {path: '', redirectTo: 'Home', pathMatch: 'full'},
     {path: 'Home', component: HomeComponent},
     {path: 'About', component: AboutComponent},
-    {path: 'Contact', component: ContactComponent},
+    {path: 'Contact', component: ContactComponent, canDeactivate: [(com: ContactComponent) => {com.canExit()}]},
     {path: 'Courses', component: CoursesComponent},
     {path: 'Courses', canActivateChild: [CanActivateChild], children: [
         {path: 'Course/:id' , component: CourseDetailComponent},
