@@ -9,7 +9,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from "./login/login.component";
 import { CheckoutComponent } from "./checkout/checkout.component";
 import { AuthGuardService } from "./Services/authguard.services";
-import { CanActivate, CanActivateChild } from "./auth.guard";
+import { CanActivate, CanActivateChild, resolve } from "./auth.guard";
 
 // define route
 const routes: Routes = [
@@ -17,8 +17,8 @@ const routes: Routes = [
     {path: '', redirectTo: 'Home', pathMatch: 'full'},
     {path: 'Home', component: HomeComponent},
     {path: 'About', component: AboutComponent},
-    {path: 'Contact', component: ContactComponent, canDeactivate: [(com: ContactComponent) => {com.canExit()}]},
-    {path: 'Courses', component: CoursesComponent},
+    {path: 'Contact', component: ContactComponent, canDeactivate: [(com: ContactComponent) => {return com.canExit()}]},
+    {path: 'Courses', component: CoursesComponent, resolve: {courses: resolve}},
     {path: 'Courses', canActivateChild: [CanActivateChild], children: [
         {path: 'Course/:id' , component: CourseDetailComponent},
         {path: 'Checkout', component: CheckoutComponent},
@@ -29,7 +29,7 @@ const routes: Routes = [
   ]
 @NgModule({
     imports: [
-RouterModule.forRoot(routes)
+RouterModule.forRoot(routes, {enableTracing: true})
 ],
 exports: [RouterModule]
 })
