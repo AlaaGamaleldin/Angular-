@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel } from '@angular/router';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
       if(routerEvent instanceof NavigationStart){
         this.showLoader = true;
       }
-      if(routerEvent instanceof NavigationEnd || routerEvent instanceof NavigationCancel){
+      if(routerEvent instanceof NavigationEnd || routerEvent instanceof NavigationCancel || routerEvent instanceof NavigationError){
         this.showLoader = false;
       }
     })
