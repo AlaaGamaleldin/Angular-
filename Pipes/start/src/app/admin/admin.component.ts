@@ -54,6 +54,7 @@ export class AdminComponent implements OnInit {
       this.Marks.nativeElement.value, 
       this.Fee.nativeElement.value
     );
+    //this.students = this.studentService.students;  this line to test impuer change in the student service 
     this.isInserting = false;
   }
 
