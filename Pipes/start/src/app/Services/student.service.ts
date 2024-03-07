@@ -18,9 +18,24 @@ export class StudentService{
         this.students.push(student);
 
         // the next block of code to test impuer change to student service
-        
+
         // let studentCopy = [...this.students];
         // studentCopy.push(student);
         // this.students = studentCopy;
     }
+
+//     Check if filterBy is 'all', an empty string, or if the list of students is empty. If any of these conditions are true, return the original list of students.
+// If the conditions in step 1 are not met, filter the list of students based on the gender specified by the filterBy parameter.
+// Return the filtered list of students.
+    FilterByGender(filterBy: string){
+        if(
+            filterBy.toLowerCase() === 'all' || filterBy === '' || this.students.length === 0){
+                return this.students;
+    }else{
+        return this.students.filter((std) => {
+            return std.gender.toLowerCase() === filterBy.toLowerCase();
+        })
+    }
+
+}
 }
