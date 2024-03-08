@@ -4,16 +4,25 @@
   <form class="form" (ngSubmit)="OnFormSubmited()" #registrationForm="ngForm">
     <div class="column">
       <div class="input-box">
-        <input type="text" placeholder="First Name" name="firstname" ngModel/>
+        <input type="text" placeholder="First Name" name="firstname" [(ngModel)]="firstName" required #fname="ngModel"/>
+        <div>
+          <small *ngIf="fname.invalid && fname.touched">First name is arequired field</small>
+        </div>
       </div> 
 
       <div class="input-box">
-        <input type="text" placeholder="Last Name" name="lastname" ngModel/>
+        <input type="text" placeholder="Last Name" name="lastname" [(ngModel)]="lastName" required #lname="ngModel"/>
+        <div>
+          <small *ngIf="lname.invalid && lname.touched">Last name is arequired field</small>
+        </div>
       </div>
     </div>    
 
     <div class="input-box">
-      <input type="text" placeholder="Email" name="email" ngModel/>
+      <input type="text" placeholder="Email" name="email" [(ngModel)]="emailAddress" required email #email="ngModel"/>
+      <div>
+        <small *ngIf="email.invalid && email.touched">Email address is arequired field</small>
+      </div>
     </div>
 
     <div class="column">
@@ -35,17 +44,9 @@
     <div class="gender-box">
       <h3>Gender</h3>
       <div class="gender-option">
-        <div class="gender">
-          <input type="radio" id="check-male" name="gender" ngModel/>
-          <label for="check-male">male</label>
-        </div>
-        <div class="gender">
-          <input type="radio" id="check-female" name="gender" ngModel/>
-          <label for="check-female">Female</label>
-        </div>
-        <div class="gender">
-          <input type="radio" id="check-other" name="gender" ngModel/>
-          <label for="check-other">prefer not to say</label>
+        <div class="gender" *ngFor="let gen of genders">
+          <input type="radio" [id]="gen.id" [value]="gen.value" name="gender" ngModel/>
+          <label for="check-male">{{gen.display}}</label>
         </div>
       </div>
     </div>
@@ -71,6 +72,6 @@
         <input type="number" placeholder="Postal code" name="postal" ngModel/>
       </div>
     </div>
-    <input type="submit" value="Submit" class="submit-btn"> 
+    <input type="submit" value="Submit" class="submit-btn" [disabled]="!registrationForm.valid"> 
   </form>
 </section>
