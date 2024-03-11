@@ -28,7 +28,18 @@ export class AppComponent {
     console.log(this.form);
     console.log(this.form.touched);
     console.log(this.form.controls['firstname'].value);
+//for resseting the template 
+    this.form.reset();
+
+//to set some defoult value to the form
+    this.form.form.patchValue({
+      gender: 'male',
+      address: {
+        country: 'EGYPT',
+      }
+    })
   }
+  
   GenerateUsername(){
     let username = '';
 
@@ -68,6 +79,7 @@ export class AppComponent {
     //     postal: this.form.value.address.postal,
     //   }
     // });
+
     this.form.form.patchValue({
       username: username
     })
