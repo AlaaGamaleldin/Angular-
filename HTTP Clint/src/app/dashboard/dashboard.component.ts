@@ -29,13 +29,11 @@ export class DashboardComponent implements OnInit{
     const headers = new HttpHeaders({'My-header': 'hellow-world'})
     this.http.post<{name: string}>('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks.json', data, {headers: headers})
     .subscribe((response) => {
-      console.log(response);
-      //this.fetchAllTasks();
+      //console.log(response);
+        this.fetchAllTasks();
     })
   }
-  FetchAllTasks(){
-    this.fetchAllTasks();
-  }
+  
   private fetchAllTasks(){
     this.http.get<{[key: string]: Task}>('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks.json')
     .pipe(map((response) => {
@@ -50,6 +48,21 @@ export class DashboardComponent implements OnInit{
     }))
     .subscribe((tasks) => {
       this.allTasks = tasks;
+    })
+  }
+
+  DeleteTask(id: string | undefined){
+    this.http.delete('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks/' +id+ '.json')
+    .subscribe((res) => {
+      //console.log(res);
+      this.fetchAllTasks();
+    })
+  }
+
+  DeleteAllTasks(){
+    this.http.delete('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks.json')
+    .subscribe((res) => {
+      this.fetchAllTasks();
     })
   }
 }
