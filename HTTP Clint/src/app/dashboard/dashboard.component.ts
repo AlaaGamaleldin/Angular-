@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Output, inject } from '@angular/core';
 import { Task } from '../Model/task';
 import { TaskService } from '../Services/task.service';
 
@@ -11,6 +11,8 @@ export class DashboardComponent implements OnInit{
   showCreateTaskForm: boolean = false;
   taskService: TaskService = inject(TaskService);
   allTasks: Task[] = [];
+  editeMode: boolean = false;
+  selectTaskToEdit: Task;
 
   ngOnInit(){
     this.fetchAllTasks();
@@ -18,6 +20,16 @@ export class DashboardComponent implements OnInit{
 
   OpenCreateTaskForm(){
     this.showCreateTaskForm = true;
+    this.editeMode = false;
+    this.selectTaskToEdit ={
+      title: '',
+      desc: '',
+      assignedTo: '',
+      createdAt: '',
+      priority: '',
+      status: '',
+      id: ''
+    }
   }
 
   CloseCreateTaskForm(){
@@ -43,5 +55,10 @@ export class DashboardComponent implements OnInit{
   DeleteAllTasks(){
     this.taskService.DeleteAllTasks();
     this.fetchAllTasks();
+  }
+  OnEditTaskClicked(id: string | undefined){
+    this.showCreateTaskForm = true;
+    this.editeMode = true;
+    this.selectTaskToEdit = this.allTasks.find((task) => {return task.id === id});
   }
 }
