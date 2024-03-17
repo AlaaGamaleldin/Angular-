@@ -40,4 +40,8 @@ export class TaskService{
           return tasks;
         }))
     }
+    UpDateTask(id: string | undefined, data: Task){
+      this.http.put('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks/' +id+ '.json', data)
+        .subscribe()
+    }
 }

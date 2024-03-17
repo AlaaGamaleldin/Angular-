@@ -1,7 +1,7 @@
 <app-create-task 
         *ngIf="showCreateTaskForm" 
         (CloseForm)="CloseCreateTaskForm()"
-        (EmitTaskdata)="CreateTask($event)"
+        (EmitTaskdata)="CreatOurUpdateTask($event)"
         [isEditeMode]="editeMode"
         [selectTaskToEdit]="selectTaskToEdit"
 ></app-create-task>
