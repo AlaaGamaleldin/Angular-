@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, inject } from '@angular/core';
 import { Task } from '../Model/task';
 import { TaskService } from '../Services/task.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,9 @@ export class DashboardComponent implements OnInit{
   editeMode: boolean = false;
   selectTaskToEdit: Task;
   currentTaskId: string = '';
+  isLoading: boolean = false;
+  errorMessage: string | null = null;
+  
 
   ngOnInit(){
     this.fetchAllTasks();
@@ -44,11 +48,28 @@ export class DashboardComponent implements OnInit{
   this.taskService.UpDateTask(this.currentTaskId, data);
    this.fetchAllTasks();
   }
+  FetchAllTaskClicked(){
+    this.fetchAllTasks()
+  }
+
   
   private fetchAllTasks(){
-   this.taskService.GetAllTask().subscribe((tasks) => {
+    this.isLoading = true;
+    this.taskService.GetAllTask().subscribe({next: (tasks) => {
     this.allTasks = tasks;
-  });
+    this.isLoading = false;
+  }, error: (error) => {
+    this.setErrorMessage(error);
+    this.isLoading = false;
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 3000);
+  }})
+  }
+  private setErrorMessage(err: HttpErrorResponse){
+    if(err.error.error === 'Permission denied'){
+      this.errorMessage = 'You di not have permission to perform this action';
+    }
   }
 
   DeleteTask(id: string | undefined){

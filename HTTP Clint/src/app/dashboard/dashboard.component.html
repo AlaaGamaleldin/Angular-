@@ -13,6 +13,7 @@
         </div>
         <div style="width: 50%; text-align: right;">
             <button class="create-task-btn" (click)="OpenCreateTaskForm()">Create Task</button>
+            <button class="create-task-btn" (click)="FetchAllTaskClicked()">fetch Task</button>
             <button class="create-task-btn" (click)="DeleteAllTasks()">Clear Tasks</button>
         </div>
     </div>
@@ -20,9 +21,12 @@
     <hr>
 
     <div class="dashboard-item-container">
+        <div class="sb sb-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+        <div class="loader" *ngIf="isLoading"></div>
         <div style="text-align: center;" *ngIf="allTasks.length < 1">
             <h2>no task created yet</h2>
         </div>
+        <ng-container *ngIf="!isLoading">
             <div class="task-item" [ngClass]="'task-' + task.status" *ngFor="let task of allTasks">
                 <div class="task-title">
                     <h3>{{ task.title }}</h3>
@@ -42,6 +46,7 @@
                     </button>            
                 </div>
             </div>
+        </ng-container>    
     </div>
 </div>
 
