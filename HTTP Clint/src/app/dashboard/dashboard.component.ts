@@ -2,6 +2,7 @@ import { Component, OnInit, Output, inject } from '@angular/core';
 import { Task } from '../Model/task';
 import { TaskService } from '../Services/task.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,10 +18,17 @@ export class DashboardComponent implements OnInit{
   currentTaskId: string = '';
   isLoading: boolean = false;
   errorMessage: string | null = null;
+  errorSub: Subscription
   
 
   ngOnInit(){
     this.fetchAllTasks();
+    this.errorSub = this.taskService.errorSubject.subscribe({next: (httpError) => {
+      this.setErrorMessage(httpError);
+  }})
+  }
+  ngOnDestroy(){
+    this.errorSub.unsubscribe();
   }
 
   OpenCreateTaskForm(){
@@ -61,15 +69,19 @@ export class DashboardComponent implements OnInit{
   }, error: (error) => {
     this.setErrorMessage(error);
     this.isLoading = false;
-    setTimeout(() => {
-      this.errorMessage = null;
-    }, 3000);
+    
   }})
   }
   private setErrorMessage(err: HttpErrorResponse){
     if(err.error.error === 'Permission denied'){
       this.errorMessage = 'You di not have permission to perform this action';
     }
+    else{
+      this.errorMessage = err.message;
+    }
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 3000);
   }
 
   DeleteTask(id: string | undefined){
