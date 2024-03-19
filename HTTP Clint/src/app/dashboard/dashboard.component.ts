@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class DashboardComponent implements OnInit{
   showCreateTaskForm: boolean = false;
+  showTaskDetails: boolean = false;
   taskService: TaskService = inject(TaskService);
   allTasks: Task[] = [];
   editeMode: boolean = false;
@@ -98,5 +99,11 @@ export class DashboardComponent implements OnInit{
     this.showCreateTaskForm = true;
     this.editeMode = true;
     this.selectTaskToEdit = this.allTasks.find((task) => {return task.id === id});
+  }
+  showCurrentTaskDetails(id: string | undefined){
+    this.showTaskDetails = true;
+  }
+  CloseTaskDetails(){
+    this.showTaskDetails = false;
   }
 }

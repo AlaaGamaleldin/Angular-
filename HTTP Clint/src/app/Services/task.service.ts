@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { Task } from "../Model/task";
-import { map } from "rxjs/operators";
-import { Subject } from "rxjs";
+import { catchError, map } from "rxjs/operators";
+import { Subject, throwError } from "rxjs";
+import { LoggingService } from "./Logging.Service";
 
 @Injectable({
     providedIn: 'root'
@@ -10,11 +11,17 @@ import { Subject } from "rxjs";
 export class TaskService{
     http: HttpClient = inject(HttpClient);
     errorSubject = new Subject<HttpErrorResponse>();
+    loggingService: LoggingService = inject(LoggingService);
     
 
     CreateTask(task: Task){
         const headers = new HttpHeaders({'My-header': 'hellow-world'})
         this.http.post<{name: string}>('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks.json', task, {headers: headers})
+        .pipe(catchError((err) => {
+          const errorObj = {statusCode: err.status, errorMessage: err.message, dateTime: new Date()};
+          this.loggingService.logError(errorObj)
+          return throwError(() => err);
+        }))
         .subscribe({error: (err) => {
           this.errorSubject.next(err);
     }});
@@ -22,6 +29,11 @@ export class TaskService{
 
     DeleteTask(id: string | undefined){
         this.http.delete('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks/' +id+ '.json')
+        .pipe(catchError((err) => {
+          const errorObj = {statusCode: err.status, errorMessage: err.message, dateTime: new Date()};
+          this.loggingService.logError(errorObj)
+          return throwError(() => err);
+        }))
         .subscribe({error: (err) => {
           this.errorSubject.next(err);
     }})
@@ -29,6 +41,11 @@ export class TaskService{
 
     DeleteAllTasks(){
         this.http.delete('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks.json')
+        .pipe(catchError((err) => {
+          const errorObj = {statusCode: err.status, errorMessage: err.message, dateTime: new Date()};
+          this.loggingService.logError(errorObj)
+          return throwError(() => err);
+        }))
         .subscribe({error: (err) => {
           this.errorSubject.next(err);
     }})
@@ -45,12 +62,26 @@ export class TaskService{
             }
           }
           return tasks;
+        }), catchError((err) => {
+          const errorObj = {statusCode: err.status, errorMessage: err.message, dateTime: new Date()};
+          this.loggingService.logError(errorObj)
+          return throwError(() => err);
         }))
     }
     UpDateTask(id: string | undefined, data: Task){
       this.http.put('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks/' +id+ '.json', data)
+        .pipe(catchError((err) => {
+          const errorObj = {statusCode: err.status, errorMessage: err.message, dateTime: new Date()};
+          this.loggingService.logError(errorObj)
+          return throwError(() => err);
+        }))
         .subscribe({error: (err) => {
           this.errorSubject.next(err);
-    }})
+    }});
+    }
+    getTaskDetails(id: string | undefined){
+      this.http.get('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks' +id+ '.json')
+      .pipe(map())
+      .subscribe()
     }
 }
