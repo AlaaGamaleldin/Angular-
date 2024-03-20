@@ -19,7 +19,8 @@ export class DashboardComponent implements OnInit{
   currentTaskId: string = '';
   isLoading: boolean = false;
   errorMessage: string | null = null;
-  errorSub: Subscription
+  errorSub: Subscription;
+  currentTask: Task | null = null;
   
 
   ngOnInit(){
@@ -102,6 +103,9 @@ export class DashboardComponent implements OnInit{
   }
   showCurrentTaskDetails(id: string | undefined){
     this.showTaskDetails = true;
+    this.taskService.getTaskDetails(id).subscribe({next: (data: Task) => {
+      this.currentTask = data;
+    }});
   }
   CloseTaskDetails(){
     this.showTaskDetails = false;

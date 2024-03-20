@@ -80,8 +80,13 @@ export class TaskService{
     }});
     }
     getTaskDetails(id: string | undefined){
-      this.http.get('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks' +id+ '.json')
-      .pipe(map())
-      .subscribe()
+      return this.http.get('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks/' +id+ '.json')
+      .pipe(map((response) => {
+        console.log(response);
+        let task = {};
+        task = {...response, id: id};
+        return task;
+      }))
+      
     }
 }

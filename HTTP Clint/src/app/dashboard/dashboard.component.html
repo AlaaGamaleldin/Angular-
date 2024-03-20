@@ -5,7 +5,10 @@
         [isEditeMode]="editeMode"
         [selectTaskToEdit]="selectTaskToEdit"
 ></app-create-task>
-<app-task-details *ngIf="showTaskDetails" (CloseDetailView)="CloseTaskDetails()"></app-task-details>
+<app-task-details *ngIf="showTaskDetails" 
+(CloseDetailView)="CloseTaskDetails()"
+[currentTask]="currentTask"
+></app-task-details>
 <div class="dashboard-container">
     <div style="display: flex;">
         <div style="width: 50%">

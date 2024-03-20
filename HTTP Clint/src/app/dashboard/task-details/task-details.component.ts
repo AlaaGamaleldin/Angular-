@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Task } from 'src/app/Model/task';
 
 @Component({
   selector: 'app-task-details',
@@ -8,6 +9,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class TaskDetailsComponent {
   @Output()
   CloseDetailView: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() currentTask: Task | null = null;
   OnCloseViewTask(){
     this.CloseDetailView.emit(false);
   }
