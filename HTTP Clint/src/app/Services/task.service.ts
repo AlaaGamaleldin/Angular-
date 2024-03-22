@@ -52,7 +52,10 @@ export class TaskService{
     }
 
     GetAllTask(){
-        return this.http.get<{[key: string]: Task}>('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks.json')
+      let headers = new HttpHeaders();
+      headers = headers.set('content-type', 'application/json');
+      headers = headers.set('Access-Control-Allow-Origin', '*')
+        return this.http.get<{[key: string]: Task}>('https://angularhttpclint-6c95e-default-rtdb.firebaseio.com/tasks.json', {headers: headers})
         .pipe(map((response) => {
           //transforming the data form obj to Array
           let tasks = [];
